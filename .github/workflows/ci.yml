@@ -31,7 +31,7 @@ jobs:
     - name: Lint
       run: npm run eslint
     - name: Docker login
-      if: (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push'
+      if: (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push' && false
       run: echo ${{ secrets.DOCKER_KEY }} | docker login -u ${{ github.repository_owner }} --password-stdin
     - name: Docker login ghcr.io
       if: (github.ref == 'refs/heads/dev' || startsWith(github.ref, 'refs/tags/')) && github.event_name == 'push'
@@ -56,7 +56,7 @@ jobs:
           -f docker/Dockerfile \
           --provenance=false \
           --push \
-          -t ${{ github.repository }}:latest-dev -t ghcr.io/${{ github.repository }}:latest-dev \
+          -t ghcr.io/${{ github.repository }}:latest-dev \
           .
     - name: "release: Docker build"
       if: startsWith(github.ref, 'refs/tags/') && github.event_name == 'push'
